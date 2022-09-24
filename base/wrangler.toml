@@ -1,5 +1,5 @@
 main = "./build/worker/shim.mjs"
-name = "template-rs-worker"
+name = "scsys-worker"
 workers_dev = true
 compatibility_date = "2022-01-20"
 
@@ -8,8 +8,3 @@ WORKERS_RS_VERSION = "0.0.11"
 
 [build]
 command = "cargo install -q worker-build && worker-build --release" # required
-
-[[rules]]
-globs = ["**/*.wasm"]
-type = "CompiledWasm"
-
