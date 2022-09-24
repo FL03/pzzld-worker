@@ -1,0 +1,10 @@
+[workspace]
+default-members = [
+    "base"
+]
+members = [
+    "base"
+]
+
+[profile.release]
+opt-level = "z"
