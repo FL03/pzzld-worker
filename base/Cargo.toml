@@ -6,7 +6,7 @@ edition = "2021"
 homepage = "https://dorc.scattered-systems.com"
 keywords = []
 license = "MIT"
-name = "worker"
+name = "scsys-worker"
 readme = "README.md"
 repository = "https://gitlab.com/scsys/services/cloudflare-worker"
 version = "0.1.0"
@@ -24,6 +24,7 @@ crate-type = ["cdylib", "rlib"]
 [dependencies]
 cfg-if = "1.0.0"
 console_error_panic_hook = { optional = true, version = "0.1.7" }
+pulldown-cmark = "0.9.2"
 serde_json = "1.0.85"
 tokio = "1.21.1"
 worker = "0.0.11"

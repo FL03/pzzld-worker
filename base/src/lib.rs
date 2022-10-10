@@ -13,7 +13,6 @@ fn log_request(req: &Request) {
     );
 }
 
-
 #[event(fetch)]
 pub async fn main(req: Request, env: Env, _ctx: worker::Context) -> Result<Response> {
     log_request(&req);
@@ -25,12 +24,14 @@ pub async fn main(req: Request, env: Env, _ctx: worker::Context) -> Result<Respo
     // catch-alls to match on specific patterns. Alternatively, use `Router::with_data(D)` to
     // provide arbitrary data that will be accessible in each route via the `ctx.data()` method.
     let router = Router::new();
-
     // Add as many routes as your Worker needs! Each route will get a `Request` for handling HTTP
     // functionality and a `RouteContext` which you can use to  and get route parameters and
     // Environment bindings like KV Stores, Durable Objects, Secrets, and Variables.
     router
         .get("/", |_, _| Response::ok("Hello from Workers!"))
+        .get("/docs/research", |_, _| Response::redirect(
+            Url::parse("https://link.storjshare.io/s/jxaq4elovwoufwt3y4kzg4hm6nrq/scsys/lib/documents/research/")?
+        ))
         .post_async("/form/:field", |mut req, ctx| async move {
             if let Some(name) = ctx.param("field") {
                 let form = req.form_data().await?;
