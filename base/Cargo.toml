@@ -25,6 +25,8 @@ crate-type = ["cdylib", "rlib"]
 cfg-if = "1.0.0"
 console_error_panic_hook = { optional = true, version = "0.1.7" }
 pulldown-cmark = "0.9.2"
+reqwest = { features = ["json"], version = "0.11.12" }
+serde = { features = ["derive"], version = "1.0.145" }  
 serde_json = "1.0.85"
 tokio = "1.21.1"
 worker = "0.0.11"
