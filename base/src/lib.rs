@@ -1,4 +1,3 @@
-use reqwest::header::HeaderMap;
 use serde_json::json;
 use worker::*;
 
