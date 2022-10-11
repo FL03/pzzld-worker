@@ -1,5 +1,5 @@
 tasks:
-  - init: sudo apt update -y && sudo apt upgrade -y && rustup default nightly && rustup target add wasm32-unknown-unknown && npm install -g npm@8.19.2 wrangler@latest && curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
+  - init: sudo apt update -y && sudo apt upgrade -y && rustup default nightly && rustup target add wasm32-unknown-unknown --toolchain nightly && npm install -g npm@8.19.2 wrangler@latest && curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
     command: cd base && wrangler dev
 
 
