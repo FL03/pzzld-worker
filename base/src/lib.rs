@@ -30,32 +30,49 @@ pub async fn form_handler(req: &mut Request, ctx: RouteContext<()>,) -> Result<R
     Response::error("Bad Request", 400)
 }
 
+pub struct LandingPage {
+    ctx: worker::Context,
+    env: Env,
+    req: Request
+}
 
+impl LandingPage {
+    pub fn new(ctx: worker::Context, env: Env, req: Request) -> Self {
+        Self { ctx, env, req }
+    }
+    pub fn log_request(&self) -> &Self {
+        log_request(&self.req);
+        self
+    }
+    pub fn panic_hook(&self) -> &Self {
+        utils::set_panic_hook();
+        self
+    }
+    pub async fn router(&mut self) -> Router<()> {
+        Router::new()
+            .get("/", |_, _| Response::ok("Hello from Workers!"))
+            .get("/docs/research", |_, _| Response::redirect(
+                Url::parse("https://link.storjshare.io/s/jxaq4elovwoufwt3y4kzg4hm6nrq/scsys/lib/documents/research/")?
+            ))
+            .post_async("/form/:field", |mut req, ctx| async move {
+                form_handler(&mut req, ctx).await
+            })
+            .get("/worker-version", |_, ctx| {
+                let version = ctx.var("WORKERS_RS_VERSION")?.to_string();
+                Response::ok(version)
+            })
+    }
+    pub async fn runner(&mut self) -> Result<Response> {
+        let req = self.req.clone()?;
+        let env: Env = self.env.clone().into();
+        self.router().await.run(req, env).await
+    }
+}
 
 #[event(fetch)]
 pub async fn main(req: Request, env: Env, _ctx: worker::Context) -> Result<Response> {
-    log_request(&req);
-
-    // Optionally, get more helpful error messages written to the console in the case of a panic.
-    utils::set_panic_hook();
-
-    // Optionally, use the Router to handle matching endpoints, use ":name" placeholders, or "*name"
-    // catch-alls to match on specific patterns. Alternatively, use `Router::with_data(D)` to
-    // provide arbitrary data that will be accessible in each route via the `ctx.data()` method.
-    let router = Router::new();
-
-    router
-        .get("/", |_, _| Response::ok("Hello from Workers!"))
-        .get("/docs/research", |_, _| Response::redirect(
-            Url::parse("https://link.storjshare.io/s/jxaq4elovwoufwt3y4kzg4hm6nrq/scsys/lib/documents/research/")?
-        ))
-        .post_async("/form/:field", |mut req, ctx| async move {
-            form_handler(&mut req, ctx).await
-        })
-        .get("/worker-version", |_, ctx| {
-            let version = ctx.var("WORKERS_RS_VERSION")?.to_string();
-            Response::ok(version)
-        })
-        .run(req, env)
-        .await
+    let mut page = LandingPage::new(_ctx, env, req);
+    page.log_request();
+    page.panic_hook();
+    page.runner().await
 }
