@@ -21,6 +21,11 @@ jobs:
     name: Deploy
     steps:
       - uses: actions/checkout@v3
+      - name: Setup
+        run: |
+          rustup update
+          rustup default nightly
+          rustup target add wasm32-unknown-unknown wasm32-wasi --toolchain nightly
       - name: Publish
         uses: cloudflare/wrangler-action@2.0.0
         with:
