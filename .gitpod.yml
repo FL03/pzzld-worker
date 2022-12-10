@@ -1,5 +1,11 @@
 tasks:
-  - init: sudo apt update -y && sudo apt upgrade -y && rustup default nightly && rustup target add wasm32-unknown-unknown --toolchain nightly && npm install -g npm@8.19.2 wrangler@latest && curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
-    command: cd base && wrangler dev
+  - init: |
+      sudo apt update -y && sudo apt upgrade -y && sudo apt autoremove -y
+      sudo apt install -y protobuf-compiler
+      rustup default nightly
+      rustup component add clippy rustfmt --toolchain nightly
+      rustup target add wasm32-unknown-unknown wasm32-wasi --toolchain nightly
+      npm install -g wasm-pack wrangler@latest
+    command: wrangler dev
 
 

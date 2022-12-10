@@ -1,10 +1,10 @@
-main = "./build/worker/shim.mjs"
-name = "scsys-worker"
-workers_dev = true
 compatibility_date = "2022-01-20"
-
-[vars]
-WORKERS_RS_VERSION = "0.0.11"
+main = "./build/worker/shim.mjs"
+name = "pzzld-worker"
+workers_dev = true
 
 [build]
 command = "cargo install -q worker-build && worker-build --release" # required
+
+[vars]
+WORKERS_RS_VERSION = "0.0.12"
