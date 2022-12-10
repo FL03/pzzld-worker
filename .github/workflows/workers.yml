@@ -31,4 +31,9 @@ jobs:
         with:
           apiToken: ${{ secrets.CF_API_TOKEN }}
           command: publish
+          preCommands: |
+            curl https://sh.rustup.rs -sSf | bash -s -- -y
+            export PATH="/root/.cargo/bin:${PATH}"
+            rustup default nightly
+            rustup target add wasm32-unknown-unknown wasm32-wasi --toolchain nightly
           workingDirectory: .
