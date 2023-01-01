@@ -1,6 +1,13 @@
+/*
+    Appellation: pzzld-worker <library>
+    Contrib: FL03 <jo3mccain@icloud.com>
+    Description: ... Summary ...
+*/
+pub use self::{oauth::*, utils::*};
 use serde_json::json;
 use worker::*;
 
+pub(crate) mod oauth;
 mod utils;
 
 fn log_request(req: &Request) {
